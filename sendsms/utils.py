@@ -27,6 +27,8 @@ def load_object(import_path):
             "'import_path' argument to 'load_object' must "
             "contain at least one dot."
         )
+    
     module_name, object_name = import_path.rsplit('.', 1)
     module = import_module(module_name)
+
     return getattr(module, object_name)

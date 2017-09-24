@@ -78,10 +78,12 @@ class SmsBackend(BaseSmsBackend):
             'DR': SMSPUBLI_DR, 
             'UR': message.from_phone
         }
+
         if SMSPUBLI_ALLOW_LONG_SMS:
             params['LM'] = '1'
 
         response = requests.post(SMSPUBLI_API_URL, params)
+        
         if response.status_code != 200:
             if  not self.fail_silently:
                 raise
@@ -89,6 +91,7 @@ class SmsBackend(BaseSmsBackend):
                 return False
 
         response_msg, response_code = response.content.split(':')
+        
         if response_msg == 'OK':
             try:
                 if "," in response_code:
@@ -109,6 +112,7 @@ class SmsBackend(BaseSmsBackend):
             except (ValueError, TypeError):
                 if not self.fail_silently:
                     raise
+                
                 return False
         
         return False
@@ -123,6 +127,7 @@ class SmsBackend(BaseSmsBackend):
         """
 
         counter = 0
+        
         for message in messages:
             res = self._send(message)
             if res:

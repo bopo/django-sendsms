@@ -60,9 +60,11 @@ class SmsBackend(BaseSmsBackend):
             return
         
         num_sent = 0
+
         for message in sms_messages:
             if self._send(message):
                 num_sent += 1
+        
         return num_sent
 
     def _send(self, message):
@@ -87,6 +89,7 @@ class SmsBackend(BaseSmsBackend):
         if results is None:
             if not self.fail_silently:
                 raise Exception("Error determining response: [" + result_page + "]")
+            
             return False
         
         code, sendqmsgid, msgid = results
@@ -94,6 +97,7 @@ class SmsBackend(BaseSmsBackend):
         if code != '0':
             if not self.fail_silently:
                 raise Exception("Error sending sms: [%s], extracted results(code, sendqmsgid, msgid): [%s]" % (result_page, results))
+            
             return False
         else:
             logger.info('SENT to: %s; sender: %s; code: %s; sendqmsgid: %s; msgid: %s; message: %s' % (
@@ -116,10 +120,14 @@ class SmsBackend(BaseSmsBackend):
         """
         # Sample result_page, single line -> "OK: 0; Sent queued message ID: 2063619577732703 SMSGlobalMsgID:6171799108850954"
         resultline = result_page.splitlines()[0] # get result line
+        
         if resultline.startswith('ERROR:'):
             raise Exception(resultline.replace('ERROR: ', ''))
+        
         patt = re.compile(r'^.+?:\s*(.+?)\s*;\s*Sent queued message ID:\s*(.+?)\s*SMSGlobalMsgID:(.+?)$', re.IGNORECASE)
         m = patt.match(resultline)
+        
         if m:
             return (m.group(1), m.group(2), m.group(3)) 
+        
         return None       

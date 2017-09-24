@@ -45,6 +45,7 @@ class SmsBackend(BaseSmsBackend):
             # Unfortunately, hex doesn't pad with zeroes, so we have to.
             for j in range(4 - len(_next)):
                 output += '0'
+            
             output += _next
 
         return output
@@ -58,6 +59,7 @@ class SmsBackend(BaseSmsBackend):
                 'message': message.body,
                 'msisdn': to  # without 00 or +
             }
+
             if BULKSMS_ENABLE_UNICODE:
                 payload['dca'] = '16bit'
                 payload['message'] = self.string_to_hex(message.body)
@@ -68,6 +70,7 @@ class SmsBackend(BaseSmsBackend):
             result = response.text.split('|')
             status_code = result[0]
             status_msg = result[1]
+            
             if status_code != '0':
                 if not self.fail_silently:
                     raise Exception(

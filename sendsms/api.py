@@ -8,6 +8,7 @@ try:
 except ImportError:
     # Django versions < 1.9
     from django.utils.importlib import import_module
+
 from sendsms.utils import load_object
 
 
@@ -59,6 +60,7 @@ def get_connection(path=None, fail_silently=False, **kwargs):
     """
 
     path = path or getattr(settings, 'SENDSMS_BACKEND', 'sendsms.backends.locmem.SmsBackend')
+    
     try:
         mod_name, klass_name = path.rsplit('.', 1)
         mod = import_module(mod_name)

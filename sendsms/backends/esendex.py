@@ -67,9 +67,11 @@ class SmsBackend(BaseSmsBackend):
         """
 
         response_dict = {}
+
         for line in response.splitlines():
             key, value = response.split("=", 1)
             response_dict[key] = value
+        
         return response_dict
 
     def _send(self, message):
@@ -90,10 +92,12 @@ class SmsBackend(BaseSmsBackend):
             'EsendexBody': message.body,
             'EsendexPlainText':'1'
         }
+
         if ESENDEX_SANDBOX:
             params['EsendexTest'] = '1'
 
         response = requests.post(ESENDEX_API_URL, params)
+
         if response.status_code != 200:
             if not self.fail_silently:
                 raise Exception('Bad status code')
@@ -128,6 +132,7 @@ class SmsBackend(BaseSmsBackend):
         :rtype: int
         """
         counter = 0
+        
         for message in messages:
             res = self._send(message)
             if res:
