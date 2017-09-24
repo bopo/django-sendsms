@@ -4,6 +4,8 @@ django-sendsms
 
 
 A simple api to send SMS messages with django. The api is structured the same way as djangos own email api.
+一个简单的API发送短信 Django API 结构相同使用自己的电子邮件的API。
+
 
 快速安装
 ============
@@ -20,12 +22,12 @@ A simple api to send SMS messages with django. The api is structured the same wa
 基本用法
 ===========
 
-Sending SMSs is like sending emails::
+发送短信是发送电子邮件::
 
     from sendsms import api
     api.send_sms(body='I can haz txt', from_phone='+41791111111', to=['+41791234567'])
 
-you can also make instances of ``SmsMessage``::
+还可以制作实例 ``SmsMessage``::
 
     from sendsms.message import SmsMessage
     message = SmsMessage(body='lolcats make me hungry', from_phone='+41791111111', to=['+41791234567'])
@@ -35,7 +37,7 @@ you can also make instances of ``SmsMessage``::
 定义后端
 ===============
 
-Creating custom ``SmsBackend`` s::
+创建自定义 ``SmsBackend`` ::
 
     from sendsms.backends.base import BaseSmsBackend
     from some.sms.delivery.api
@@ -55,5 +57,5 @@ Creating custom ``SmsBackend`` s::
                         if not self.fail_silently:
                             raise
 
-Then all you need to do is reference your backend in the ``SENDSMS_BACKEND`` setting.
 
+然后，所有你需要做的是参考你的后台在 ``SENDSMS_BACKEND`` 设置。
